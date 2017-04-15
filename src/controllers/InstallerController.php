@@ -1,25 +1,39 @@
 <?php
-namespace Jitheshgopan\AppInstaller;
+namespace Jitheshgopan\AppInstaller\Controllers;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
+use Jitheshgopan\AppInstaller\Installer;
 
 
-class InstallerController extends \BaseController {
-    public function index(){
-        //$stages = Config::get('app-installer::stages');
+class InstallerController extends Controller {
+    public function index() {
+        //If install.php is not present of database config is already set, Abort - disable installation
+        if(!function_exists('install_path')) {
+            $installFilePath = public_path('install.php');
+        } else {
+            $installFilePath = install_path('install.php');
+        }
+        if(!file_exists($installFilePath)) {
+            die("Sorry! Installation disabled!");
+        }
+
+        //$stages = Config::get('app-installer.stages');
         $installer = new Installer();
 
         //Requirements check stage
-        $this->_setupRequirementsStage($installer);
+        //$this->_setupRequirementsStage($installer);
 
         //Directory permissions stage
-        $this->_directoryPermissionsStage($installer);
+        //$this->_directoryPermissionsStage($installer);
 
         //Database config stage
         $this->_setupDbConnectionStage($installer);
 
-        $this->_setupFinishStage($installer);
+        //Import database files
+        $this->_setupImportDbStep($installer);
 
-        $dbConfig = require(app_path('config/database.php'));
+        //Finish
+        $this->_setupFinishStage($installer);
 
         try {
             return $installer->run();
@@ -29,13 +43,13 @@ class InstallerController extends \BaseController {
 
     }
 
-    public function _setupRequirementsStage($installer){
+    /*public function _setupRequirementsStage($installer){
         $requirementsStage = $installer->addStage("System requirements", [
-
+            'banner' => asset('images/installation/system.png')
         ]);
 
         //Php version
-        $requirementsStage->addPhpVersionCheckStep('5.5', '>=');
+        $requirementsStage->addPhpVersionCheckStep(\Config::get('appMeta.minimumPHPVersion'), '>=');
 
         //GD extension check
         $gdExtensionCheck = $requirementsStage->addStep("Checking GD Extension", [
@@ -48,31 +62,77 @@ class InstallerController extends \BaseController {
             'type' => 'ExtensionCheck'
         ]);
         $pdoCheck->check('pdo');
-    }
+
+        //CURL extension
+        $curlCheck = $requirementsStage->addStep("Checking CURL Extension", [
+            'type' => 'ExtensionCheck'
+        ]);
+        $curlCheck->check('curl');
+
+        //allow_url_fopen settings
+        $allowUrlFopenCheck = $requirementsStage->addStep("Checking allow_url_fopen settings", [
+            'type' => 'IniGetCheck'
+        ]);
+        $allowUrlFopenCheck->check('allow_url_fopen', null, "'allow_url_fopen' must be enabled. You may comtact your hosting support or change it in php.ini(if you have access to it)");
+    }*/
 
     public function _setupDbConnectionStage($installer){
         $dbConfigStage = $installer->addStage("Database connection", [
-
+            'banner' => \Jitheshgopan\AppInstaller\Installer::asset('images/database.png')
         ]);
         $dbConfigStep = $dbConfigStage->addDbConfigStep('mysql', [
-            'configFilePath' => app_path('config/database.php')
+            'configSampleFilePath' => config_path('database-sample.php'),
+            'configFilePath' => config_path('database.php')
         ]);
     }
 
-    public function _directoryPermissionsStage($installer) {
-        $directoryWritableStage = $installer->addStage("Directory permissions", [
+    public function _setupImportDbStep($installer){
+        $dbImportStage = $installer->addStage("Loading database with necessary data", [
+            'banner' => asset('images/installation/importdb.png')
+        ]);
+        /*$dbImportStep = $dbImportStage->addStep('Importing', [
+            'type' => 'ImportDb',
+            'dbFiles' => [
+                Config::get('install.dbBasicStructureFile'),
+                Config::get('install.dbBasicDataFile')
+            ]
+        ]);*/
+    }
 
+    /*public function _directoryPermissionsStage($installer) {
+        $directoryWritableStage = $installer->addStage("Directory permissions", [
+            'banner' => asset('images/installation/permissions.png')
         ]);
         //Is directory writable check
-        $writableCheck = $directoryWritableStage->addStep("Checking if the 'config' directory is writable", [
+        $configCheck = $directoryWritableStage->addStep("Checking if the 'config' directory is writable", [
             'type' => 'WritableCheck'
         ]);
-        $writableCheck->checkWritable(app_path('config'));
-    }
+
+        $langCheck = $directoryWritableStage->addStep("Checking if the 'lang' directory is writable", [
+            'type' => 'WritableCheck'
+        ]);
+
+        $mediaCheck = $directoryWritableStage->addStep("Checking if the 'media' directory is writable", [
+            'type' => 'WritableCheck'
+        ]);
+
+        $uploadsCheck = $directoryWritableStage->addStep("Checking if the 'media/uploads' directory is writable", [
+            'type' => 'WritableCheck'
+        ]);
+
+        $configCheck->checkWritable(config_path());
+        $langCheck->checkWritable(app('path.lang'));
+        $mediaCheck->checkWritable(content_path('media'));
+        $uploadsCheck->checkWritable(content_path('media/uploads'));
+    }*/
 
     public function _setupFinishStage($installer){
+        $afterInstallRedirectUrl = \Config::get('app-installer.afterInstallRedirectUrl');
+        if(is_callable($afterInstallRedirectUrl)) {
+            $afterInstallRedirectUrl = call_user_func($afterInstallRedirectUrl);
+        }
         $finishStage = $installer->addFinishStage("Installation Complete", [
-            'proceedUrl' => '/admin/login',
+            'proceedUrl' => $afterInstallRedirectUrl,
             'proceedUrlText' => 'Go to admin panel'
         ]);
     }

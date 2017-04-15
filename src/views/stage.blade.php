@@ -1,4 +1,7 @@
 <h4>{{$currentStage->getName()}}</h4>
+@if($currentStage->hasOption('banner'))
+    <div style="margin: 30px auto;" class="text-center"><img src="{{$currentStage->getOption('banner')}}" alt="" style="max-width: 300px; max-height: 120px;" class="animated bounce"/></div>
+@endif
 <div class="panel-group" role="tablist" aria-multiselectable="true">
 @foreach($currentStage->getSteps() as $step)
     @if(!$step->isMuted())
@@ -14,7 +17,7 @@
             @if($step->hasOutput())
                 <div class="panel-collapse collapse step-body" id="stepBody{{$step->getId()}}">
                     <div class="panel-body">
-                        {{$step->getOutput()}}
+                        {!! $step->getOutput() !!}
                     </div>
                 </div>
             @endif
@@ -34,10 +37,10 @@
     <br/><br/>
     <div class="text-center">
         @if($currentStage->getPreviousStageNumber())
-            <a class="btn btn-default btn-lg" href="{{Installer::route()}}?stage={{$currentStage->getPreviousStageNumber()}}">Prev</a>
+            <a class="btn btn-default btn-lg" href="{{\Jitheshgopan\AppInstaller\Installer::route()}}?stage={{$currentStage->getPreviousStageNumber()}}">Prev</a>
         @endif
         @if($currentStage->getNextStageNumber())
-            <a class="btn btn-success btn-lg" href="{{Installer::route()}}?stage={{$currentStage->getNextStageNumber()}}">Next</a>
+            <a class="btn btn-success btn-lg" href="{{\Jitheshgopan\AppInstaller\Installer::route()}}?stage={{$currentStage->getNextStageNumber()}}">Next</a>
         @endif
     </div>
 </div>

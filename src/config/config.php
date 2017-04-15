@@ -2,5 +2,8 @@
 
 return [
     "route" => '/install-it',
-    "routeName" => 'AppInstaller'
+    "routeName" => 'AppInstaller',
+    'afterInstallRedirectUrl' => function() {
+        return route('home');
+    }
 ];

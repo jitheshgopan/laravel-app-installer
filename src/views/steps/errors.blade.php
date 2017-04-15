@@ -2,9 +2,9 @@
     <div class="alert alert-danger">
         @if(is_array($error))
             <p><b>{{$error['title']}}</b></p>
-            <p><small>{{$error['message']}}</small></p>
+            <p><small>{{{$error['message']}}}</small></p>
         @else
-        {{$error}}
+        {{{$error}}}
         @endif
     </div>
 @endforeach

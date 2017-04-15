@@ -186,7 +186,7 @@ class Installer {
      * @param $key config key
      */
     public static function config($key){
-        return Config::get(INSTALLER_NAMESPACE . '::' . $key);
+        return Config::get(INSTALLER_NAMESPACE . '.' . $key);
     }
 
     /*

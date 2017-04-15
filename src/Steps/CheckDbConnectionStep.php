@@ -42,7 +42,8 @@ class CheckDbConnectionStep extends AbstractStep{
         Config::set('database', $dbConfig);
 
         try {
-            $dbConnection = DB::connection('mysql');
+            DB::reconnect('mysql');
+            $dbConnection = DB::connection('mysql')->getDatabaseName();
         } catch(\PDOException $e){
             return false;
         }

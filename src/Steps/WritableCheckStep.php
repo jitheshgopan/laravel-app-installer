@@ -33,7 +33,7 @@ class WritableCheckStep extends AbstractStep {
     public function runChecks(){
         foreach($this->checks as $dirPath) {
             if(!is_writable($dirPath)) {
-                $this->errors[] = "Directory  '" . $dirPath . "' is not writable. Please make it writable";
+                $this->errors[] = "Directory  '" . $dirPath . "' is not writable. Please make it writable(including its sub-directories, if any)";
                 return false;
             }
         }

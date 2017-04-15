@@ -121,6 +121,18 @@ abstract class AbstractStage {
     }
 
     /*
+     * CHeck if the stage has a particular Option
+     * @return boolean
+     */
+    public function hasOption($key){
+        $options = $this->getOptions();
+        if(empty($options[$key])){
+            return false;
+        }
+        return true;
+    }
+
+    /*
      * Set a single option
      * @param $options The options of the stage
      */

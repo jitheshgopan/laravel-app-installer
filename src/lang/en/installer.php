@@ -1,12 +1,12 @@
 <?php
 
 return [
-    "installerName"             =>  "App Installer",
-    "pageHeading"               =>  "The simple App Installer",
-    "pageDescription"           =>  "A cool app installer for laravel",
+    "installerName"             =>  "Installer",
+    "pageHeading"               =>  "Installer",
+    "pageDescription"           =>  "Installation made easy",
     "steps"                     =>  "Steps",
     "stages"                    =>  "Stages",
-    "footerMainText"            =>  "&copy; App Installer",
+    "footerMainText"            =>  "&copy; BornSocio Installer",
     "footerSubText"             =>  "Making installation a breeze",
     "inputDbConfigStepName"     =>  "Input Database details",
     "checkDbConfigStepName"     =>  "Check Database connection"

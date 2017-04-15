@@ -1,5 +1,5 @@
 @extends(INSTALLER_NAMESPACE . '::layout')
 
 @section('stageContent')
-    {{$currentStageContent}}
+    {!! $currentStageContent !!}
 @stop

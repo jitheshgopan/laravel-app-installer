@@ -29,8 +29,9 @@ class DbConfigStep extends AbstractStep {
     public function handler(){
         $sourceStep = $this->getSourceStep();
         $newDbConfigData = $sourceStep ? $sourceStep->getData() : $this->getData();
+        $configSampleFilePath = $this->getOption('configSampleFilePath');
         $configFilePath = $this->getOption('configFilePath');
-        $dbConfig = require($configFilePath);
+        $dbConfig = require($configSampleFilePath);
         $dbConfig['connections']['mysql'] = array_merge($dbConfig['connections']['mysql'], $newDbConfigData);
 
         $configVarString = var_export($dbConfig, true);

@@ -9,9 +9,9 @@
         var formData = @if($step->getData()){{json_encode($step->getData())}} @else undefined @endif;
         var $form = $('#form-Step{{$step->getId()}}');
         var $responseBox = $form.siblings('.form-submit-response');
-        var fieldsSchema = {{json_encode($fieldsSchema)}};
+        var fieldsSchema = {!! json_encode($fieldsSchema) !!};
         function onFormSuccess(values){
-            $.post('{{route(Installer::config('routeName'))}}',{
+            $.post('{{route(\Jitheshgopan\AppInstaller\Installer::config('routeName'))}}',{
                 stage: '{{$currentStage->getStageNumber()}}',
                 action: 'saveStepData',
                 step: '{{$step->getId()}}',

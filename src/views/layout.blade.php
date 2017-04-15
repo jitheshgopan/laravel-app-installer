@@ -9,13 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{Installer::trans('installer.installerName')}}</title>
+    <title>{{\Jitheshgopan\AppInstaller\Installer::trans('installer.installerName')}}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{Installer::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{Installer::asset('css/styles.css')}}" rel="stylesheet">
-    <link href="{{Installer::asset('css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
-    <link href="{{Installer::asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{\Jitheshgopan\AppInstaller\Installer::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{\Jitheshgopan\AppInstaller\Installer::asset('css/styles.css')}}" rel="stylesheet">
+    <link href="{{\Jitheshgopan\AppInstaller\Installer::asset('css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{\Jitheshgopan\AppInstaller\Installer::asset('css/animate.css')}}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style>
@@ -32,9 +32,9 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="{{Installer::asset('js/jquery-1.11.0.js')}}"></script>
-    <script src="{{Installer::asset('js/underscore-min.js')}}"></script>
-    <script src="{{Installer::asset('js/jsonform.js')}}"></script>
+    <script src="{{\Jitheshgopan\AppInstaller\Installer::asset('js/jquery-1.11.0.js')}}"></script>
+    <script src="{{\Jitheshgopan\AppInstaller\Installer::asset('js/underscore-min.js')}}"></script>
+    <script src="{{\Jitheshgopan\AppInstaller\Installer::asset('js/jsonform.js')}}"></script>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
     <div class="col-md-12">
         <div class="navbar-header">
 
-            <a href="#" class="navbar-brand">{{Installer::trans('installer.installerName')}}</a>
+            <a href="#" class="navbar-brand">{{\Jitheshgopan\AppInstaller\Installer::trans('installer.installerName')}}</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
                 <i class="glyphicon glyphicon-search"></i>
             </button>
@@ -63,8 +63,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="text-center page-heading-block">
-                <h2>{{Installer::trans('installer.pageHeading')}}</h2>
-                <p>{{Installer::trans('installer.pageDescription')}}</p>
+                <h2>{{\Jitheshgopan\AppInstaller\Installer::trans('installer.pageHeading')}}</h2>
+                <p>{{\Jitheshgopan\AppInstaller\Installer::trans('installer.pageDescription')}}</p>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
         <div class="col-md-8 col-md-offset-2 main-canvas-block">
             <div class="row">
                 <div class="col-md-4">
-                    @include(Installer::view('stagesNav'))
+                    @include(\Jitheshgopan\AppInstaller\Installer::view('stagesNav'))
                 </div>
                 <div class="col-md-8">
                     <div class="panel panel-default">
@@ -93,12 +93,12 @@
 <!-- /.container -->
 
 <div class="footer text-center">
-    <p><b>{{Installer::trans('installer.footerMainText')}}</b></p>
-    <small>{{Installer::trans('installer.footerSubText')}}</small>
+    <p><b>{{\Jitheshgopan\AppInstaller\Installer::trans('installer.footerMainText')}}</b></p>
+    <small>{{\Jitheshgopan\AppInstaller\Installer::trans('installer.footerSubText')}}</small>
 </div>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="{{Installer::asset('js/bootstrap.min.js')}}"></script>
+<script src="{{\Jitheshgopan\AppInstaller\Installer::asset('js/bootstrap.min.js')}}"></script>
 
 </body>
 
