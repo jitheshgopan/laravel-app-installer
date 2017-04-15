@@ -6,7 +6,7 @@
 
 <script>
     $(function(){
-        var formData = @if($step->getData()){{json_encode($step->getData())}} @else undefined @endif;
+        var formData = @if($step->getData()){!! json_encode($step->getData()) !!} @else undefined @endif;
         var $form = $('#form-Step{{$step->getId()}}');
         var $responseBox = $form.siblings('.form-submit-response');
         var fieldsSchema = {!! json_encode($fieldsSchema) !!};
