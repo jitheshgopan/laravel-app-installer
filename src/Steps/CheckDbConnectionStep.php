@@ -38,7 +38,7 @@ class CheckDbConnectionStep extends AbstractStep{
         $customDbConfig = array_merge($this->defaultDbConfig, $dbData);
 
         $dbConfig = Config::get('database');
-        //$dbConfig['connections']['mysql'] = array_merge($dbConfig['connections']['mysql'], $customDbConfig);
+        $dbConfig['connections']['mysql'] = array_merge($dbConfig['connections']['mysql'], $customDbConfig);
         Config::set('database', $dbConfig);
 
         try {
