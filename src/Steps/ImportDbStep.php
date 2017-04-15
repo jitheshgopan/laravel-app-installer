@@ -16,17 +16,29 @@ use \DB;
 class ImportDbStep extends AbstractStep{
     public function process($prevStep) {
         $options = $this->getOptions();
-        if(empty($options['dbFiles']) && empty($options['dbFile'])) {
-            $this->errors[] = "Error importing Database. 'dbFiles' or 'dbFile' option should be passed";
-        } else {
-            $dbFiles = isset($options['dbFiles']) ? $options['dbFiles'] : array($options['dbFile']);
-            try{
-                foreach ($dbFiles as $dbFile) {
-                    $this->importDbFile($dbFile);
-                }
+        //Processing imports in the order - Migration, seed, sql imports
+        if($options['migration']) {
+            \Artisan::call('migrate', array('--force' => true));
+        }
 
-            } catch(InstallerException $e) {
-                $this->errors[] = $e->getMessage();
+        if($options['seed']) {
+            \Artisan::call('db:seed');
+        }
+
+        if(!empty($options['sqlFiles'])) {
+            if(is_string($options['sqlFiles']))
+                $options['sqlFiles'] = array($options['sqlFiles']);
+            foreach ($options['sqlFiles'] as $sqlFile) {
+                if(!file_exists($sqlFile)) {
+                    $this->errors[] = "Error importing Database. SqlFile : '{$sqlFile}' doesn't exist.";
+                    break;
+                }
+                try{
+                    $this->importDbFile($sqlFile);
+                } catch(InstallerException $e) {
+                    $this->errors[] = $e->getMessage();
+                    break;
+                }
             }
         }
         if($this->hasError()){

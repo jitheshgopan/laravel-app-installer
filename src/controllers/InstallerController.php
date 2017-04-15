@@ -45,7 +45,7 @@ class InstallerController extends Controller {
 
     /*public function _setupRequirementsStage($installer){
         $requirementsStage = $installer->addStage("System requirements", [
-            'banner' => asset('images/installation/system.png')
+            'banner' => Installer::asset('images/system.png')
         ]);
 
         //Php version
@@ -81,27 +81,22 @@ class InstallerController extends Controller {
             'banner' => \Jitheshgopan\AppInstaller\Installer::asset('images/database.png')
         ]);
         $dbConfigStep = $dbConfigStage->addDbConfigStep('mysql', [
-            'configSampleFilePath' => config_path('database-sample.php'),
-            'configFilePath' => config_path('database.php')
+            'configFilePath' => config_path('config.php')
         ]);
     }
 
     public function _setupImportDbStep($installer){
         $dbImportStage = $installer->addStage("Loading database with necessary data", [
-            'banner' => asset('images/installation/importdb.png')
+            'banner' => Installer::asset('images/importdb.png')
         ]);
-        /*$dbImportStep = $dbImportStage->addStep('Importing', [
-            'type' => 'ImportDb',
-            'dbFiles' => [
-                Config::get('install.dbBasicStructureFile'),
-                Config::get('install.dbBasicDataFile')
-            ]
-        ]);*/
+        $dbImportStep = $dbImportStage->addStep('Importing', array_merge([
+            'type' => 'ImportDb'
+        ], \Config::get('app-installer.dbImport')));
     }
 
     /*public function _directoryPermissionsStage($installer) {
         $directoryWritableStage = $installer->addStage("Directory permissions", [
-            'banner' => asset('images/installation/permissions.png')
+            'banner' => Installer::asset('images/permissions.png')
         ]);
         //Is directory writable check
         $configCheck = $directoryWritableStage->addStep("Checking if the 'config' directory is writable", [

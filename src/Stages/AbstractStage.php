@@ -418,6 +418,7 @@ abstract class AbstractStage {
      * Run a step
      */
     public function runStep($step, $prevStep = null, $runNext = false){
+        //dd($step);
         $this->setCurrentStep($step);
         $stepResult = $step->run($prevStep);
         if($runNext) {

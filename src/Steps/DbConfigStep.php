@@ -29,33 +29,21 @@ class DbConfigStep extends AbstractStep {
     public function handler(){
         $sourceStep = $this->getSourceStep();
         $newDbConfigData = $sourceStep ? $sourceStep->getData() : $this->getData();
-        $configSampleFilePath = $this->getOption('configSampleFilePath');
-        $configFilePath = $this->getOption('configFilePath');
-        $dbConfig = require($configSampleFilePath);
-        $dbConfig['connections']['mysql'] = array_merge($dbConfig['connections']['mysql'], $newDbConfigData);
-
-        $configVarString = var_export($dbConfig, true);
-        $configFileContentView = View::make(Installer::view('steps.dbConfigFile'))->with([
-            'configVarString' => $configVarString
-        ]);
-        $newConfigFileContent = "<?php \n" .$configFileContentView->render();
-        //die($newConfigFileContent);
-        try {
-            if(file_put_contents($configFilePath, $newConfigFileContent)) {
-                return true;
-            } else {
-                throw new \Exception();
+        $dbConfigProcessor = \Config::get('app-installer.processDBConfig');
+        try{
+            if(is_callable($dbConfigProcessor)) {
+                if(!call_user_func($dbConfigProcessor, $newDbConfigData)) {
+                    $this->errors[] = "Database connection process returned false.";
+                }
             }
-        } catch(\Exception $e){
-            $this->errors[] = [
-                'title' => 'Error writing database config file',
-                'message' => $e->getMessage()
-            ];
+        } catch (\Exception $e) {
+            $this->errors[] = $e->getMessage();
         }
         if($this->hasError()){
             $this->renderErrorView();
             return false;
         }
+        return true;
     }
 
     public function getFollowingSteps(){
